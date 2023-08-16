@@ -733,54 +733,6 @@ namespace ACulinaryArtillery
 
     }
 
-
-
-    [HarmonyPatch(typeof(BlockEntityDisplay))]
-    class DisplayPatches
-    {
-        //[HarmonyPrepare]
-        //static bool Prepare()
-        //{
-        //    return true;
-        //}
-
-        [HarmonyPrefix]
-        [HarmonyPatch("genMesh")]
-        static bool displayFix(ItemStack stack, BlockEntityDisplay __instance, ref MeshData __result)
-        //static bool displayFix(ItemStack stack, ref MeshData __result, BlockEntityDisplay __instance, ref Item ___nowTesselatingItem)
-        {
-            if (!(stack.Collectible is ItemExpandedRawFood))
-                return true;
-            string[] ings = (stack.Attributes?["madeWith"] as StringArrayAttribute)?.value;
-            if (ings == null || ings.Length <= 0)
-                return true;
-
-            //___nowTesselatingItem = stack.Item;
-
-            __result = (stack.Collectible as ItemExpandedRawFood).GenMesh(__instance.Api as ICoreClientAPI, ings, stack, new Vec3f(0, __instance.Block.Shape.rotateY, 0));
-            //__result = (stack.Collectible as ItemExpandedRawFood).GenMesh(__instance.Api as ICoreClientAPI, ings, __instance, new Vec3f(0, __instance.Block.Shape.rotateY, 0));
-            if (__result != null)
-                __result.RenderPassesAndExtraBits.Fill((short)EnumChunkRenderPass.BlendNoCull);
-            else
-                return true;
-
-
-            if (stack.Collectible.Attributes?[__instance.AttributeTransformCode].Exists == true)
-            {
-                ModelTransform transform = stack.Collectible.Attributes?[__instance.AttributeTransformCode].AsObject<ModelTransform>();
-                transform.EnsureDefaultValues();
-                transform.Rotation.Y += __instance.Block.Shape.rotateY;
-                __result.ModelTransform(transform);
-            }
-
-            //if (__instance.Block.Shape.rotateY == 90 || __instance.Block.Shape.rotateY == 270) __result.Rotate(new Vec3f(0f, 0f, 0f), 0f, 90 * GameMath.DEG2RAD, 0f);
-
-            return false;
-        }
-    }
-
-
-
     [HarmonyPatch(typeof(BlockEntityCookedContainer))]
     class BECookedContainerPatches
     {
