@@ -10,7 +10,9 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<OutputPath></OutputPath>
+		<OutputPath>$(AppData)\VintagestoryData\Mods\ACullinaryArtillery</OutputPath>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 		<DefineConstants>TRACE</DefineConstants>
 		<Optimize>false</Optimize>
 	</PropertyGroup>
